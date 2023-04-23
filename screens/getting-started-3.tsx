@@ -11,9 +11,9 @@ const gettingStartedImage = Asset.fromModule(
   require("../assets/getting-started.png")
 ).uri;
 
-type Props = NativeStackScreenProps<RootStackParamList, "GettingStarted">;
+type Props = NativeStackScreenProps<RootStackParamList, "GettingStarted3">;
 
-const GettingStarted = ({ navigation }: Props) => {
+const GettingStarted3 = ({ navigation }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <Image
@@ -73,4 +73,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GettingStarted;
+export default GettingStarted3;
