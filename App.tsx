@@ -2,12 +2,10 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import Home from "./screens/home";
-import Profile from "./screens/profile";
+import GettingStarted from "./screens/getting-started";
 
 export type RootStackParamList = {
-  Home: undefined;
-  Profile: undefined;
+  GettingStarted: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -17,11 +15,10 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Home"
-          component={Home}
+          name="GettingStarted"
+          component={GettingStarted}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Profile" component={Profile} />
       </Stack.Navigator>
     </NavigationContainer>
   );
