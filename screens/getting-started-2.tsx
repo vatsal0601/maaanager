@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Asset } from "expo-asset";
 import * as SecureStore from "expo-secure-store";
