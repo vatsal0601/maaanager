@@ -1,10 +1,13 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as SplashScreen from "expo-splash-screen";
 
 import GettingStarted from "./screens/getting-started";
 import GettingStarted2 from "./screens/getting-started-2";
 import GettingStarted3 from "./screens/getting-started-3";
+
+SplashScreen.preventAutoHideAsync();
 
 export type RootStackParamList = {
   GettingStarted: undefined;
@@ -15,6 +18,18 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const hideSplashScreen = async () => {
+      await SplashScreen.hideAsync();
+    };
+
+    setTimeout(() => {
+      hideSplashScreen();
+    }, 1000);
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator>

@@ -5,7 +5,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Asset } from "expo-asset";
 import * as SecureStore from "expo-secure-store";
 
-import { handleName } from "../lib/handleName";
+import { handleName } from "../lib/handle-name";
 import Loader from "../icons/loader";
 import Button from "../components/ui/button";
 import Input from "../components/ui/input";
