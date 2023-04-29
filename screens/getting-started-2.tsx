@@ -4,8 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Asset } from "expo-asset";
 import * as SecureStore from "expo-secure-store";
-import { z } from "zod";
 
+import { handleName } from "../lib/handleName";
 import Loader from "../icons/loader";
 import RightArrow from "../icons/right-arrow";
 import Button from "../components/ui/button";
@@ -22,22 +22,8 @@ const GettingStarted2 = ({ navigation }: Props) => {
   const [name, setName] = React.useState({ value: "", error: "" });
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const handleName = () => {
-    const nameSchema = z.string().min(3, "Name must be at least 3 characters");
-
-    const result = nameSchema.safeParse(name.value);
-
-    if (result.success === false) {
-      setName(prev => ({ ...prev, error: result.error.issues[0].message }));
-      return result.success;
-    }
-
-    setName({ value: result.data, error: "" });
-    return result.success;
-  };
-
   const handleSubmit = async () => {
-    const isNameValid = handleName();
+    const isNameValid = handleName(name, setName);
 
     if (!isNameValid) return;
 
@@ -66,13 +52,15 @@ const GettingStarted2 = ({ navigation }: Props) => {
           placeholder="John Doe"
           value={name.value}
           onChangeText={value => setName({ value, error: "" })}
-          onEndEditing={() => handleName()}
+          onEndEditing={() => handleName(name, setName)}
           error={name.error}
           editable={!isLoading}
           selectTextOnFocus={!isLoading}
         />
         <View style={styles.spacer} />
-        <Button onPress={handleSubmit} disabled={isLoading}>
+        <Button
+          onPress={handleSubmit}
+          disabled={isLoading || name.error.length > 0}>
           {!isLoading ? (
             <>
               <Text style={styles.buttonText}>Next</Text>
@@ -96,6 +84,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#f0fdf4",
+    paddingBottom: 32,
   },
   image: {
     width: "100%",
@@ -113,6 +102,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     color: "#4b5563",
+    lineHeight: 22,
   },
   spacer: {
     height: 4,
