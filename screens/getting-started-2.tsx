@@ -60,7 +60,8 @@ const GettingStarted2 = ({ navigation }: Props) => {
         <View style={styles.spacer} />
         <Button
           onPress={handleSubmit}
-          disabled={isLoading || name.error.length > 0}>
+          disabled={isLoading || name.error.length > 0}
+          style={styles.button}>
           {!isLoading ? (
             <>
               <Text style={styles.buttonText}>Next</Text>
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f0fdf4",
+    backgroundColor: "#F0713603",
     paddingBottom: 32,
   },
   image: {
@@ -106,6 +107,9 @@ const styles = StyleSheet.create({
   },
   spacer: {
     height: 4,
+  },
+  button: {
+    backgroundColor: "#F07136",
   },
   buttonText: {
     fontWeight: "700",

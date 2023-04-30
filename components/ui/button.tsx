@@ -43,7 +43,7 @@ const baseStyles = StyleSheet.create({
 
 const variantStyles = StyleSheet.create({
   primary: {
-    backgroundColor: "#06D188",
+    backgroundColor: "#41BB82",
   },
   secondary: {
     borderColor: "#e5e7eb",
