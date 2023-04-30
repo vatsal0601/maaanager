@@ -9,24 +9,6 @@ export interface Transaction {
   date: string;
 }
 
-export const createTransactionTable = () => {
-  const sql =
-    "CREATE TABLE if NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, accountId INTEGER NOT NULL, tagId INTEGER NOT NULL, type TEXT NOT NULL, amount REAL NOT NULL, date TEXT NOT NULL, FOREIGN KEY(accountId) REFERENCES accounts(id), FOREIGN KEY(tagId) REFERENCES tags(id));";
-
-  return db.transaction(tx => {
-    tx.executeSql(
-      sql,
-      [],
-      (_, result) =>
-        console.log("Transaction table created successfully", result),
-      err => {
-        console.log(err);
-        return null;
-      }
-    );
-  });
-};
-
 export const addTransaction = ({
   accountId,
   tagId,

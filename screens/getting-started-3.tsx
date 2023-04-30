@@ -3,8 +3,8 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Asset } from "expo-asset";
-import * as SecureStore from "expo-secure-store";
 
+import { addAccount } from "../database/accounts";
 import { handleName } from "../lib/handle-name";
 import Loader from "../icons/loader";
 import Button from "../components/ui/button";
@@ -27,7 +27,7 @@ const GettingStarted3 = ({ navigation }: Props) => {
     if (!isNameValid) return;
 
     setIsLoading(true);
-    await SecureStore.setItemAsync("maaanager-name", name.value);
+    await addAccount({ name: name.value });
     setIsLoading(false);
     navigation.navigate("GettingStarted3");
   };
