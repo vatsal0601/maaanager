@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Animated, Easing } from "react-native";
-import Svg, { Path, SvgProps } from "react-native-svg";
+import Svg, { Path, type SvgProps } from "react-native-svg";
 
 const Loader = (props: SvgProps) => {
   const spinValue = new Animated.Value(0);

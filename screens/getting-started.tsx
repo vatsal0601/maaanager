@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Asset } from "expo-asset";
 
-import RightArrow from "../icons/right-arrow";
+import ArrowRight from "../icons/arrow-right";
 import Button from "../components/ui/button";
 import type { RootStackParamList } from "../App";
 
@@ -33,7 +33,7 @@ const GettingStarted = ({ navigation }: Props) => {
           onPress={() => navigation.navigate("GettingStarted2")}
           style={styles.buttonContainer}>
           <Text style={styles.buttonText}>Get started</Text>
-          <RightArrow stroke="#fff" />
+          <ArrowRight stroke="#fff" />
         </Button>
       </View>
     </SafeAreaView>

@@ -1,16 +1,25 @@
 import * as React from "react";
-import { Text } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
 import * as SplashScreen from "expo-splash-screen";
 
+import { createTables } from "./database";
 import { doAccountExists } from "./database/accounts";
+
 import GettingStarted from "./screens/getting-started";
 import GettingStarted2 from "./screens/getting-started-2";
 import GettingStarted3 from "./screens/getting-started-3";
-import { createTables } from "./database";
+import Home from "./screens/home";
+import Profile from "./screens/profile";
+import StatsIcon from "./icons/chart";
+import HomeIcon from "./icons/home";
+import ProfileIcon from "./icons/user";
+import FundsIcon from "./icons/wallet";
+import TabIcon from "./components/ui/tab";
 
 export type RootStackParamList = {
   GettingStarted: undefined;
@@ -18,7 +27,15 @@ export type RootStackParamList = {
   GettingStarted3: undefined;
 };
 
+export type TabParamList = {
+  Home: undefined;
+  Profile: undefined;
+  Stats: undefined;
+  Funds: undefined;
+};
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator<TabParamList>();
 
 const checkName = async () => {
   const name = await SecureStore.getItemAsync("maaanager-name");
@@ -51,9 +68,75 @@ const App = () => {
   if (isNamePresent && areAccountsPresent)
     return (
       <SafeAreaProvider>
-        <SafeAreaView>
-          <Text>Home</Text>
-        </SafeAreaView>
+        <NavigationContainer>
+          <Tab.Navigator
+            screenOptions={{
+              headerShown: false,
+              tabBarShowLabel: false,
+              tabBarStyle: styles.tabContainer,
+            }}>
+            <Tab.Screen
+              name="Home"
+              component={Home}
+              options={{
+                tabBarIcon: props => (
+                  <TabIcon
+                    focused={props.focused}
+                    size={props.size}
+                    icon={HomeIcon}
+                    label="Home"
+                    color="#41BB82"
+                  />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Stats"
+              component={Home}
+              options={{
+                tabBarIcon: props => (
+                  <TabIcon
+                    focused={props.focused}
+                    size={props.size}
+                    icon={StatsIcon}
+                    label="Stats"
+                    color="#F07136"
+                  />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Funds"
+              component={Home}
+              options={{
+                tabBarIcon: props => (
+                  <TabIcon
+                    focused={props.focused}
+                    size={props.size}
+                    icon={FundsIcon}
+                    label="Funds"
+                    color="#D181B6"
+                  />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Profile"
+              component={Profile}
+              options={{
+                tabBarIcon: props => (
+                  <TabIcon
+                    focused={props.focused}
+                    size={props.size}
+                    icon={ProfileIcon}
+                    label="Profile"
+                    color="#F9DA32"
+                  />
+                ),
+              }}
+            />
+          </Tab.Navigator>
+        </NavigationContainer>
       </SafeAreaProvider>
     );
 
@@ -87,5 +170,11 @@ const App = () => {
     </SafeAreaProvider>
   );
 };
+
+const styles = StyleSheet.create({
+  tabContainer: {
+    paddingVertical: 12,
+  },
+});
 
 export default App;

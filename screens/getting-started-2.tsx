@@ -6,8 +6,8 @@ import { Asset } from "expo-asset";
 import * as SecureStore from "expo-secure-store";
 
 import { handleName } from "../lib/handle-name";
+import ArrowRight from "../icons/arrow-right";
 import Loader from "../icons/loader";
-import RightArrow from "../icons/right-arrow";
 import Button from "../components/ui/button";
 import Input from "../components/ui/input";
 import type { RootStackParamList } from "../App";
@@ -65,7 +65,7 @@ const GettingStarted2 = ({ navigation }: Props) => {
           {!isLoading ? (
             <>
               <Text style={styles.buttonText}>Next</Text>
-              <RightArrow stroke="#fff" />
+              <ArrowRight stroke="#fff" />
             </>
           ) : (
             <>
