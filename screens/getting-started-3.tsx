@@ -5,6 +5,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Asset } from "expo-asset";
 
 import { addAccount } from "../database/accounts";
+
 import { handleName } from "../lib/handle-name";
 import Loader from "../icons/loader";
 import Button from "../components/ui/button";

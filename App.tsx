@@ -19,7 +19,7 @@ import StatsIcon from "./icons/chart";
 import HomeIcon from "./icons/home";
 import ProfileIcon from "./icons/user";
 import FundsIcon from "./icons/wallet";
-import TabIcon from "./components/ui/tab";
+import TabIcon from "./components/tab";
 
 export type RootStackParamList = {
   GettingStarted: undefined;
