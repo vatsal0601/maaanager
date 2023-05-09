@@ -1,6 +1,13 @@
 import * as React from "react";
-import { StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  type StyleProp,
+  type ViewStyle,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -17,8 +24,15 @@ const Layout = ({
   containerStyle,
   children,
 }: LayoutProps) => {
+  const tabBarHeight = useBottomTabBarHeight();
+
   return (
-    <View style={[styles.wrapper, wrapperStyle]}>
+    <ScrollView
+      alwaysBounceHorizontal={false}
+      alwaysBounceVertical={false}
+      bounces={false}
+      overScrollMode="never"
+      style={[styles.wrapper, { marginBottom: tabBarHeight }, wrapperStyle]}>
       <SafeAreaView style={[styles.container, containerStyle]}>
         <View style={styles.topContainer}>
           <View style={styles.iconContainer}>{icon}</View>
@@ -26,14 +40,14 @@ const Layout = ({
         </View>
         {children}
       </SafeAreaView>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: "#41BB821A",
+    backgroundColor: "#fff",
   },
   container: {
     flex: 1,

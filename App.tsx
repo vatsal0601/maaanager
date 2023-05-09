@@ -1,10 +1,14 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Platform, StyleSheet } from "react-native";
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
 
 import { DataProvider, useData } from "./contexts/DataContext";
 
@@ -38,6 +42,8 @@ const Tab = createBottomTabNavigator<TabParamList>();
 SplashScreen.preventAutoHideAsync();
 
 const _App = () => {
+  const insets = useSafeAreaInsets();
+
   const { nameExists, accountExists } = useData();
 
   if (nameExists && accountExists)
@@ -46,7 +52,12 @@ const _App = () => {
         screenOptions={{
           headerShown: false,
           tabBarShowLabel: false,
-          tabBarStyle: styles.tabContainer,
+          tabBarStyle: [
+            styles.tabContainer,
+            Platform.OS === "android" && { height: 64 },
+            Platform.OS === "ios" && { paddingTop: 16 },
+            { paddingBottom: insets.bottom },
+          ],
         }}>
         <Tab.Screen
           name="Home"
@@ -139,18 +150,28 @@ const _App = () => {
 };
 
 const App = () => (
-  <SafeAreaProvider>
-    <DataProvider>
-      <NavigationContainer>
-        <_App />
-      </NavigationContainer>
-    </DataProvider>
-  </SafeAreaProvider>
+  <>
+    <StatusBar style="auto" />
+    <SafeAreaProvider>
+      <DataProvider>
+        <NavigationContainer>
+          <_App />
+        </NavigationContainer>
+      </DataProvider>
+    </SafeAreaProvider>
+  </>
 );
 
 const styles = StyleSheet.create({
   tabContainer: {
-    paddingVertical: 12,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    borderTopWidth: 1,
+    backgroundColor: "#fff",
+    borderTopColor: "#e5e7eb",
+    elevation: 0,
   },
 });
 

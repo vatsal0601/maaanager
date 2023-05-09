@@ -5,6 +5,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Asset } from "expo-asset";
 
 import { addAccount } from "../database/accounts";
+import { useData } from "../contexts/DataContext";
 
 import { handleName } from "../lib/handle-name";
 import Loader from "../icons/loader";
@@ -16,11 +17,10 @@ const gettingStartedAccount = Asset.fromModule(
   require("../assets/getting-started-account.png")
 ).uri;
 
-type Props = NativeStackScreenProps<RootStackParamList, "GettingStarted2">;
-
-const GettingStarted3 = ({ navigation }: Props) => {
+const GettingStarted3 = () => {
   const [name, setName] = React.useState({ value: "", error: "" });
   const [isLoading, setIsLoading] = React.useState(false);
+  const { setAccountExists } = useData();
 
   const handleSubmit = async () => {
     const isNameValid = handleName(name, setName);
@@ -30,7 +30,7 @@ const GettingStarted3 = ({ navigation }: Props) => {
     setIsLoading(true);
     await addAccount({ name: name.value });
     setIsLoading(false);
-    navigation.navigate("GettingStarted3");
+    setAccountExists(true);
   };
 
   return (

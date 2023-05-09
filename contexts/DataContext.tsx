@@ -9,6 +9,7 @@ interface DataProps {
   name: string;
   nameExists: boolean;
   accountExists: boolean;
+  setAccountExists: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface DataProviderProps {
@@ -41,7 +42,8 @@ export const DataProvider = ({ children }: DataProviderProps) => {
   }, []);
 
   return (
-    <DataContext.Provider value={{ name, nameExists, accountExists }}>
+    <DataContext.Provider
+      value={{ name, nameExists, accountExists, setAccountExists }}>
       {children}
     </DataContext.Provider>
   );
