@@ -1,12 +1,14 @@
 import * as React from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
+import { EXPENSE } from "../database/transactions";
 import { useData } from "../contexts/DataContext";
 
 import { formatAmount } from "../lib/format-amount";
 import HomeIcon from "../icons/home";
 import Plus from "../icons/plus";
 import Layout from "../components/layout";
+import TransactionCard from "../components/transaction-card";
 import Button from "../components/ui/button";
 
 const overviewData = [
@@ -85,61 +87,14 @@ const Home = () => {
           <Text style={styles.title}>Recent transactions</Text>
           <Text style={styles.subText}>View all</Text>
         </View>
-        <View style={styles.transactionsContainer}>
-          <View style={styles.transactionContainer}>
-            <View style={styles.transactionLeftContainer}>
-              <Text style={styles.transactionTitle}>Stipend</Text>
-              <Text style={styles.transactionSubText}>
-                Income &bull; 1hr ago
-              </Text>
-            </View>
-            <Text style={styles.transactionAmount}>+{formatAmount(50000)}</Text>
-          </View>
-          <View style={styles.transactionContainer}>
-            <View style={styles.transactionLeftContainer}>
-              <Text style={styles.transactionTitle}>Stipend</Text>
-              <Text style={styles.transactionSubText}>
-                Income &bull; 1hr ago
-              </Text>
-            </View>
-            <Text style={styles.transactionAmount}>+{formatAmount(50000)}</Text>
-          </View>
-          <View style={styles.transactionContainer}>
-            <View style={styles.transactionLeftContainer}>
-              <Text style={styles.transactionTitle}>Stipend</Text>
-              <Text style={styles.transactionSubText}>
-                Income &bull; 1hr ago
-              </Text>
-            </View>
-            <Text style={styles.transactionAmount}>+{formatAmount(50000)}</Text>
-          </View>
-          <View style={styles.transactionContainer}>
-            <View style={styles.transactionLeftContainer}>
-              <Text style={styles.transactionTitle}>Stipend</Text>
-              <Text style={styles.transactionSubText}>
-                Income &bull; 1hr ago
-              </Text>
-            </View>
-            <Text style={styles.transactionAmount}>+{formatAmount(50000)}</Text>
-          </View>
-          <View style={styles.transactionContainer}>
-            <View style={styles.transactionLeftContainer}>
-              <Text style={styles.transactionTitle}>Stipend</Text>
-              <Text style={styles.transactionSubText}>
-                Income &bull; 1hr ago
-              </Text>
-            </View>
-            <Text style={styles.transactionAmount}>+{formatAmount(50000)}</Text>
-          </View>
-          <View style={styles.transactionContainer}>
-            <View style={styles.transactionLeftContainer}>
-              <Text style={styles.transactionTitle}>Stipend</Text>
-              <Text style={styles.transactionSubText}>
-                Income &bull; 1hr ago
-              </Text>
-            </View>
-            <Text style={styles.transactionAmount}>+{formatAmount(50000)}</Text>
-          </View>
+        <View style={{ gap: 16 }}>
+          <TransactionCard
+            title="Bought a new phone"
+            tag="Shopping"
+            timestamp="2 hours ago"
+            amount={100000}
+            type={EXPENSE}
+          />
         </View>
       </View>
     </Layout>
@@ -213,34 +168,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-  },
-  transactionsContainer: {
-    gap: 16,
-  },
-  transactionContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: "#f3f4f6",
-  },
-  transactionLeftContainer: {
-    gap: 4,
-  },
-  transactionTitle: {
-    fontWeight: "700",
-    fontSize: 20,
-    color: "#030712",
-  },
-  transactionSubText: {
-    color: "#4b5563",
-    fontSize: 14,
-  },
-  transactionAmount: {
-    fontWeight: "700",
-    fontSize: 24,
-    color: "#41BB82",
   },
 });
 

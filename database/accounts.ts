@@ -29,7 +29,7 @@ export const addAccount = ({ name }: Pick<Account, "name">) => {
 };
 
 export const doAccountExists = () => {
-  const sql = "SELECT COUNT(name) FROM accounts;";
+  const sql = "SELECT COUNT(name) as totalAccounts FROM accounts;";
 
   return new Promise<boolean>((resolve, reject) => {
     db.transaction(tx => {
@@ -37,12 +37,34 @@ export const doAccountExists = () => {
         sql,
         [],
         (_, result) => {
-          const count = (result.rows._array[0]["COUNT(name)"] as number) ?? 0;
+          const count = (result.rows._array[0]["totalAccounts"] as number) ?? 0;
           resolve(count > 0);
         },
         err => {
           console.log(err);
           reject(false);
+          return null;
+        }
+      );
+    });
+  });
+};
+
+export const getTotalAmount = () => {
+  const sql = "SELECT SUM(balance) as totalAmount FROM accounts;";
+
+  return new Promise<number>((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        sql,
+        [],
+        (_, result) => {
+          const total = (result.rows._array[0]["totalAmount"] as number) ?? 0;
+          resolve(total);
+        },
+        err => {
+          console.log(err);
+          reject(0);
           return null;
         }
       );
