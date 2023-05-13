@@ -149,16 +149,33 @@ const _App = () => {
   );
 };
 
-const App = () => (
+const App = () => {
+  const { appIsReady } = useData();
+
+  const onLayoutRootView = React.useCallback(async () => {
+    if (!appIsReady) return;
+    await SplashScreen.hideAsync();
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
+  }
+
+  return (
+    <SafeAreaProvider onLayout={onLayoutRootView}>
+      <NavigationContainer>
+        <_App />
+      </NavigationContainer>
+    </SafeAreaProvider>
+  );
+};
+
+const Wrapper = () => (
   <>
     <StatusBar style="auto" />
-    <SafeAreaProvider>
-      <DataProvider>
-        <NavigationContainer>
-          <_App />
-        </NavigationContainer>
-      </DataProvider>
-    </SafeAreaProvider>
+    <DataProvider>
+      <App />
+    </DataProvider>
   </>
 );
 
@@ -175,4 +192,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default Wrapper;

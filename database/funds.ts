@@ -40,8 +40,9 @@ export const getTotalFundAmount = () => {
         sql,
         [],
         (_, result) => {
-          const count = (result.rows._array[0]["totalAmount"] as number) ?? 0;
-          resolve(count);
+          const { rows } = result;
+          const { totalAmount } = rows.item(0);
+          resolve(totalAmount ?? 0);
         },
         err => {
           console.log(err);

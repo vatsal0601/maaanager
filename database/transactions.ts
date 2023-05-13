@@ -67,3 +67,27 @@ export const addFundTransaction = ({
     );
   });
 };
+
+export const getCurrentMonthExpenses = () => {
+  const sql = `SELECT SUM(amount) as totalExpense FROM transactions WHERE date BETWEEN DATE('now','start of month') AND DATE('now','start of month','+1 month','-1 day') AND type = '${EXPENSE}';`;
+
+  return new Promise<number>((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        sql,
+        [],
+        (_, result) => {
+          const { rows } = result;
+          const { totalExpense } = rows.item(0);
+          console.log(totalExpense);
+          resolve(totalExpense ?? 0);
+        },
+        err => {
+          console.log(err);
+          reject(err);
+          return null;
+        }
+      );
+    });
+  });
+};

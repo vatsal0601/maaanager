@@ -37,7 +37,9 @@ export const doAccountExists = () => {
         sql,
         [],
         (_, result) => {
-          const count = (result.rows._array[0]["totalAccounts"] as number) ?? 0;
+          const { rows } = result;
+          const { totalAccounts } = rows.item(0);
+          const count = (totalAccounts as number) ?? 0;
           resolve(count > 0);
         },
         err => {
@@ -59,8 +61,9 @@ export const getTotalAmount = () => {
         sql,
         [],
         (_, result) => {
-          const total = (result.rows._array[0]["totalAmount"] as number) ?? 0;
-          resolve(total);
+          const { rows } = result;
+          const { totalAmount } = rows.item(0);
+          resolve(totalAmount ?? 0);
         },
         err => {
           console.log(err);
