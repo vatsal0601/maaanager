@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Asset } from "expo-asset";
 
 import { addAccount } from "../database/accounts";
@@ -11,7 +10,6 @@ import { handleName } from "../lib/handle-name";
 import Loader from "../icons/loader";
 import Button from "../components/ui/button";
 import Input from "../components/ui/input";
-import type { RootStackParamList } from "../App";
 
 const gettingStartedAccount = Asset.fromModule(
   require("../assets/getting-started-account.png")
@@ -41,6 +39,7 @@ const GettingStarted3 = () => {
         resizeMode="contain"
         style={styles.image}
       />
+      x
       <View style={styles.ctaContainer}>
         <Text style={styles.title}>
           Let's Connect the Dots: Add Your Bank Account!

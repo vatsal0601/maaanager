@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import formatDistance from "date-fns/formatDistance";
 
-import { EXPENSE, FUND, INCOME } from "../database/transactions";
+import { EXPENSE, FUND, INCOME } from "../database";
 
 import { formatAmount } from "../lib/format-amount";
 

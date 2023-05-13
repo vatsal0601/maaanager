@@ -1,7 +1,9 @@
 import * as React from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import { Asset } from "expo-asset";
 
-import { EXPENSE, homeScreenData } from "../database";
+import { homeScreenData } from "../database";
+import { getTransactionWithTagsAndFunds } from "../database/transactions";
 import { useData } from "../contexts/DataContext";
 
 import { formatAmount } from "../lib/format-amount";
@@ -10,8 +12,15 @@ import Layout from "../components/layout";
 import TransactionCard from "../components/transaction-card";
 import Button from "../components/ui/button";
 
+const noTransactions = Asset.fromModule(
+  require("../assets/no-transactions.png")
+).uri;
+
 const Home = () => {
   const [homeOverviewData, setHomeOverviewData] = React.useState([0, 0, 0, 0]);
+  const [transactions, setTransactions] = React.useState<
+    Awaited<ReturnType<typeof getTransactionWithTagsAndFunds>>
+  >([]);
 
   const [totalAmount, totalFundsAmount, currentMonthExpenses, completedFunds] =
     homeOverviewData;
@@ -20,8 +29,13 @@ const Home = () => {
 
   React.useEffect(() => {
     const getData = async () => {
-      const data = await homeScreenData();
+      const [data, transactions] = await Promise.all([
+        homeScreenData(),
+        getTransactionWithTagsAndFunds({ limit: 5 }),
+      ]);
+
       setHomeOverviewData(data);
+      setTransactions(transactions);
     };
 
     getData();
@@ -88,7 +102,7 @@ const Home = () => {
               <Text style={styles.overviewSubText}>{item.title}</Text>
             </View>
           )}
-          ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
           keyExtractor={item => `${item.id}`}
           showsHorizontalScrollIndicator={false}
           numColumns={2}
@@ -98,17 +112,39 @@ const Home = () => {
       <View style={styles.recentTransactionContainer}>
         <View style={styles.recentTransactionTitleContainer}>
           <Text style={styles.title}>Recent transactions</Text>
-          <Text style={styles.subText}>View all</Text>
+          {transactions.length > 0 ? (
+            <Text style={styles.subText}>View all</Text>
+          ) : null}
         </View>
-        <View style={{ gap: 16 }}>
-          <TransactionCard
-            title="Bought a new phone"
-            tag="Shopping"
-            timestamp={new Date()}
-            amount={100000}
-            type={EXPENSE}
-          />
-        </View>
+        <FlatList
+          data={transactions}
+          renderItem={({ item }) => (
+            <TransactionCard
+              title={item.title}
+              tag={item?.tagName ?? item?.fundName ?? "No tag"}
+              timestamp={new Date(item.date)}
+              amount={item.amount}
+              type={item.type}
+            />
+          )}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          keyExtractor={item => `${item.id}`}
+          scrollEnabled={false}
+          ListEmptyComponent={() => (
+            <View>
+              <Image
+                source={{ uri: noTransactions }}
+                alt="No transactions image"
+                resizeMode="contain"
+                style={styles.image}
+              />
+              <Text style={styles.noTransactionsText}>
+                Time to get transactional! Tap the 'Record Transaction' button
+                and start slaying those finances like the boss you are.
+              </Text>
+            </View>
+          )}
+        />
       </View>
     </Layout>
   );
@@ -181,6 +217,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+  },
+  separator: {
+    height: 16,
+  },
+  image: {
+    width: "100%",
+    height: 200,
+  },
+  noTransactionsText: {
+    color: "#9ca3af",
+    fontSize: 14,
+    textAlign: "center",
   },
 });
 

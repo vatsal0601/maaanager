@@ -2,6 +2,7 @@ import { EXPENSE, FUND, INCOME, db } from "./index";
 
 export interface BaseTransaction {
   id: number;
+  title: string;
   amount: number;
   date: string;
 }
@@ -64,22 +65,33 @@ export const addFundTransaction = ({
   });
 };
 
-export const getCurrentMonthExpenses = () => {
-  const sql = `SELECT SUM(amount) as totalExpense FROM transactions WHERE date BETWEEN DATE('now','start of month') AND DATE('now','start of month','+1 month','-1 day') AND type = '${EXPENSE}';`;
+interface TransactionWithTagsAndFunds extends BaseTransaction {
+  type: typeof INCOME | typeof EXPENSE | typeof FUND;
+  tagName?: string;
+  fundName?: string;
+}
 
-  return new Promise<number>((resolve, reject) => {
+export const getTransactionWithTagsAndFunds = ({
+  limit,
+}: {
+  limit?: number;
+}) => {
+  const query = `SELECT transactions.id as id, transactions.title AS title, transactions.amount AS amount, transactions.type AS type, transactions.date AS date, tags.name AS tagName, funds.name AS fundName FROM transactions LEFT JOIN tags on transactions.tagid = tags.id LEFT JOIN funds on transactions.fundId = funds.id ORDER BY date DESC ${
+    limit ? "LIMIT 5" : ""
+  };`;
+
+  return new Promise<TransactionWithTagsAndFunds[]>((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        sql,
+        query,
         [],
-        (_, result) => {
-          const { rows } = result;
-          const { totalExpense } = rows.item(0);
-          console.log(totalExpense);
-          resolve(totalExpense ?? 0);
+        (_, { rows }) => {
+          console.log(
+            `[Q] Get transactions with tags and funds: ${rows.length} rows`
+          );
+          resolve(rows._array);
         },
-        err => {
-          console.log(err);
+        (_, err) => {
           reject(err);
           return null;
         }
