@@ -1,9 +1,7 @@
 import * as React from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
-import { getTotalAmount } from "../database/accounts";
-import { getTotalFundAmount } from "../database/funds";
-import { EXPENSE, getCurrentMonthExpenses } from "../database/transactions";
+import { EXPENSE, homeScreenData } from "../database";
 import { useData } from "../contexts/DataContext";
 
 import { formatAmount } from "../lib/format-amount";
@@ -13,21 +11,17 @@ import TransactionCard from "../components/transaction-card";
 import Button from "../components/ui/button";
 
 const Home = () => {
-  const [totalAmount, setTotalAmount] = React.useState(0);
-  const [totalFundAmount, setTotalFundAmount] = React.useState(0);
-  const [currentMonthExpenses, setCurrentMonthExpenses] = React.useState(0);
+  const [homeOverviewData, setHomeOverviewData] = React.useState([0, 0, 0, 0]);
+
+  const [totalAmount, totalFundsAmount, currentMonthExpenses, completedFunds] =
+    homeOverviewData;
 
   const { name } = useData();
 
   React.useEffect(() => {
     const getData = async () => {
-      const totalAmount = await getTotalAmount();
-      const totalFundAmount = await getTotalFundAmount();
-      const currentMonthExpenses = await getCurrentMonthExpenses();
-
-      setTotalAmount(totalAmount);
-      setTotalFundAmount(totalFundAmount);
-      setCurrentMonthExpenses(currentMonthExpenses);
+      const data = await homeScreenData();
+      setHomeOverviewData(data);
     };
 
     getData();
@@ -37,7 +31,7 @@ const Home = () => {
     {
       id: 1,
       title: "Spendable amount",
-      amount: totalAmount - totalFundAmount,
+      amount: totalAmount - totalFundsAmount,
       color: "#41BB82",
       backgroundColor: "#41BB8233",
     },
@@ -58,7 +52,7 @@ const Home = () => {
     {
       id: 4,
       title: "Funds saved",
-      amount: 0,
+      amount: completedFunds,
       color: "#F9DA32",
       backgroundColor: "#F9DA3233",
     },

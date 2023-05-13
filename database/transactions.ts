@@ -1,8 +1,4 @@
-import { db } from "./index";
-
-export const INCOME = "INCOME";
-export const EXPENSE = "EXPENSE";
-export const FUND = "FUND";
+import { EXPENSE, FUND, INCOME, db } from "./index";
 
 export interface BaseTransaction {
   id: number;
