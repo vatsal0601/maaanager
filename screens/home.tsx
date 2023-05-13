@@ -1,53 +1,72 @@
 import * as React from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
-import { EXPENSE } from "../database/transactions";
+import { getTotalAmount } from "../database/accounts";
+import { getTotalFundAmount } from "../database/funds";
+import { EXPENSE, getCurrentMonthExpenses } from "../database/transactions";
 import { useData } from "../contexts/DataContext";
 
 import { formatAmount } from "../lib/format-amount";
-import HomeIcon from "../icons/home";
 import Plus from "../icons/plus";
 import Layout from "../components/layout";
 import TransactionCard from "../components/transaction-card";
 import Button from "../components/ui/button";
 
-const overviewData = [
-  {
-    id: 1,
-    title: "Spendable amount",
-    amount: "50000",
-    color: "#41BB82",
-    backgroundColor: "#41BB8233",
-  },
-  {
-    id: 2,
-    title: "Spent this month",
-    amount: "10000000",
-    color: "#F07136",
-    backgroundColor: "#F0713633",
-  },
-  {
-    id: 3,
-    title: "Total amount",
-    amount: "0.00",
-    color: "#D181B6",
-    backgroundColor: "#D181B633",
-  },
-  {
-    id: 4,
-    title: "Funds saved",
-    amount: "0.00",
-    color: "#F9DA32",
-    backgroundColor: "#F9DA3233",
-  },
-];
-
 const Home = () => {
+  const [totalAmount, setTotalAmount] = React.useState(0);
+  const [totalFundAmount, setTotalFundAmount] = React.useState(0);
+  const [currentMonthExpenses, setCurrentMonthExpenses] = React.useState(0);
+
   const { name } = useData();
+
+  React.useEffect(() => {
+    const getData = async () => {
+      const totalAmount = await getTotalAmount();
+      const totalFundAmount = await getTotalFundAmount();
+      const currentMonthExpenses = await getCurrentMonthExpenses();
+
+      setTotalAmount(totalAmount);
+      setTotalFundAmount(totalFundAmount);
+      setCurrentMonthExpenses(currentMonthExpenses);
+    };
+
+    getData();
+  }, []);
+
+  const overviewData = [
+    {
+      id: 1,
+      title: "Spendable amount",
+      amount: totalAmount - totalFundAmount,
+      color: "#41BB82",
+      backgroundColor: "#41BB8233",
+    },
+    {
+      id: 2,
+      title: "Spent this month",
+      amount: currentMonthExpenses,
+      color: "#F07136",
+      backgroundColor: "#F0713633",
+    },
+    {
+      id: 3,
+      title: "Total amount",
+      amount: totalAmount,
+      color: "#D181B6",
+      backgroundColor: "#D181B633",
+    },
+    {
+      id: 4,
+      title: "Funds saved",
+      amount: 0,
+      color: "#F9DA32",
+      backgroundColor: "#F9DA3233",
+    },
+  ];
 
   return (
     <Layout
-      icon={<HomeIcon solid fill="#fff" />}
+      screenTitle="Home"
       button={
         <Button style={styles.buttonContainer}>
           <Plus width={20} height={20} stroke="#fff" strokeWidth={2} />
@@ -70,7 +89,7 @@ const Home = () => {
                 index % 2 !== 0 && { marginLeft: 16 },
               ]}>
               <Text style={[styles.overviewTitle, { color: item.color }]}>
-                {formatAmount(parseInt(item.amount))}
+                {formatAmount(item.amount)}
               </Text>
               <Text style={styles.overviewSubText}>{item.title}</Text>
             </View>
@@ -91,7 +110,7 @@ const Home = () => {
           <TransactionCard
             title="Bought a new phone"
             tag="Shopping"
-            timestamp="2 hours ago"
+            timestamp={new Date()}
             amount={100000}
             type={EXPENSE}
           />

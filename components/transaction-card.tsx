@@ -1,5 +1,6 @@
 import * as React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import formatDistance from "date-fns/formatDistance";
 
 import { EXPENSE, FUND, INCOME } from "../database/transactions";
 
@@ -8,7 +9,7 @@ import { formatAmount } from "../lib/format-amount";
 interface TransactionCardProps {
   title: string;
   tag: string;
-  timestamp: string;
+  timestamp: Date;
   amount: number;
   type: typeof EXPENSE | typeof INCOME | typeof FUND;
 }
@@ -36,7 +37,8 @@ const TransactionCard = ({
       <View style={styles.transactionLeftContainer}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.subText}>
-          {tag} &bull; {timestamp}
+          {tag} &bull;{" "}
+          {formatDistance(timestamp, new Date(), { addSuffix: true })}
         </Text>
       </View>
       <Text style={[styles.amount, getAmountColor(type)]}>
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
     color: "#41BB82",
   },
   expense: {
-    color: "#dc2626",
+    color: "#ef4444",
   },
   fund: {
     color: "#D181B6",

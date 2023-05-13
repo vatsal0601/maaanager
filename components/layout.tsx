@@ -2,6 +2,7 @@ import * as React from "react";
 import {
   ScrollView,
   StyleSheet,
+  Text,
   View,
   type StyleProp,
   type ViewStyle,
@@ -11,14 +12,14 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 interface LayoutProps {
   children: React.ReactNode;
-  icon: React.ReactNode;
+  screenTitle: string;
   button?: React.ReactNode;
   wrapperStyle?: StyleProp<ViewStyle>;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 const Layout = ({
-  icon,
+  screenTitle,
   button,
   wrapperStyle,
   containerStyle,
@@ -35,7 +36,7 @@ const Layout = ({
       style={[styles.wrapper, { marginBottom: tabBarHeight }, wrapperStyle]}>
       <SafeAreaView style={[styles.container, containerStyle]}>
         <View style={styles.topContainer}>
-          <View style={styles.iconContainer}>{icon}</View>
+          <Text style={styles.screenTitle}>{screenTitle}</Text>
           {button}
         </View>
         {children}
@@ -55,15 +56,13 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
   },
-  iconContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    height: 40,
-    width: 40,
-    backgroundColor: "#030712",
-    borderRadius: 8,
+  screenTitle: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: "#030712",
   },
 });
 
