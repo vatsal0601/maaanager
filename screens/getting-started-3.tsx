@@ -39,7 +39,6 @@ const GettingStarted3 = () => {
         resizeMode="contain"
         style={styles.image}
       />
-      x
       <View style={styles.ctaContainer}>
         <Text style={styles.title}>
           Let's Connect the Dots: Add Your Bank Account!

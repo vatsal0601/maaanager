@@ -1,9 +1,11 @@
 import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { StackScreenProps } from "@react-navigation/stack";
 import { Asset } from "expo-asset";
 import * as SecureStore from "expo-secure-store";
+
+import { useData } from "../contexts/DataContext";
 
 import { handleName } from "../lib/handle-name";
 import ArrowRight from "../icons/arrow-right";
@@ -16,11 +18,12 @@ const gettingStartedName = Asset.fromModule(
   require("../assets/getting-started-name.png")
 ).uri;
 
-type Props = NativeStackScreenProps<RootStackParamList, "GettingStarted2">;
+type Props = StackScreenProps<RootStackParamList, "GettingStarted2">;
 
 const GettingStarted2 = ({ navigation }: Props) => {
   const [name, setName] = React.useState({ value: "", error: "" });
   const [isLoading, setIsLoading] = React.useState(false);
+  const { setName: setNameDataContext } = useData();
 
   const handleSubmit = async () => {
     const isNameValid = handleName(name, setName);
@@ -29,6 +32,7 @@ const GettingStarted2 = ({ navigation }: Props) => {
 
     setIsLoading(true);
     await SecureStore.setItemAsync("maaanager-name", name.value);
+    setNameDataContext(name.value);
     setIsLoading(false);
     navigation.navigate("GettingStarted3");
   };

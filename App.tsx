@@ -6,7 +6,10 @@ import {
 } from "react-native-safe-area-context";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  TransitionPresets,
+  createStackNavigator,
+} from "@react-navigation/stack";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 
@@ -36,7 +39,7 @@ export type TabParamList = {
   Funds: undefined;
 };
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
 
 SplashScreen.preventAutoHideAsync();
@@ -123,27 +126,19 @@ const _App = () => {
     );
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        ...TransitionPresets.SlideFromRightIOS,
+      }}>
       {!nameExists ? (
         <>
-          <Stack.Screen
-            name="GettingStarted"
-            component={GettingStarted}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="GettingStarted2"
-            component={GettingStarted2}
-            options={{ headerShown: false }}
-          />
+          <Stack.Screen name="GettingStarted" component={GettingStarted} />
+          <Stack.Screen name="GettingStarted2" component={GettingStarted2} />
         </>
       ) : null}
       {!accountExists ? (
-        <Stack.Screen
-          name="GettingStarted3"
-          component={GettingStarted3}
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen name="GettingStarted3" component={GettingStarted3} />
       ) : null}
     </Stack.Navigator>
   );

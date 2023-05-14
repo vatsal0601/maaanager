@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   },
   noTransactionsText: {
     color: "#9ca3af",
-    fontSize: 14,
+    fontSize: 12,
     textAlign: "center",
   },
 });

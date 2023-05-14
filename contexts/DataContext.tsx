@@ -9,6 +9,7 @@ interface DataProps {
   nameExists: boolean;
   accountExists: boolean;
   appIsReady: boolean;
+  setName: React.Dispatch<React.SetStateAction<string>>;
   setAccountExists: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -20,7 +21,6 @@ const DataContext = React.createContext<DataProps | undefined>(undefined);
 
 export const DataProvider = ({ children }: DataProviderProps) => {
   const [name, setName] = React.useState("");
-  const [nameExists, setNameExists] = React.useState(false);
   const [accountExists, setAccountExists] = React.useState(false);
   const [appIsReady, setAppIsReady] = React.useState(false);
 
@@ -34,11 +34,9 @@ export const DataProvider = ({ children }: DataProviderProps) => {
         ]);
 
         const [_, accountExists, name] = res;
-        const nameExists = name !== null && name.length > 0;
 
         setAccountExists(accountExists);
-        setNameExists(nameExists);
-        if (nameExists) setName(name);
+        if (name !== null && name.length > 0) setName(name);
       } catch (err) {
         console.log(err);
       } finally {
@@ -53,9 +51,10 @@ export const DataProvider = ({ children }: DataProviderProps) => {
     <DataContext.Provider
       value={{
         name,
-        nameExists,
+        nameExists: name.length > 0,
         accountExists,
         appIsReady,
+        setName,
         setAccountExists,
       }}>
       {children}

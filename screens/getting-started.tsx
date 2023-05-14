@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { StackScreenProps } from "@react-navigation/stack";
 import { Asset } from "expo-asset";
 
 import ArrowRight from "../icons/arrow-right";
@@ -12,7 +12,7 @@ const gettingStartedImage = Asset.fromModule(
   require("../assets/getting-started.png")
 ).uri;
 
-type Props = NativeStackScreenProps<RootStackParamList, "GettingStarted">;
+type Props = StackScreenProps<RootStackParamList, "GettingStarted">;
 
 const GettingStarted = ({ navigation }: Props) => {
   return (
